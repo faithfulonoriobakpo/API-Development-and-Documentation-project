@@ -13,7 +13,7 @@ def paginate_questions(request, selection):
     end = start + QUESTIONS_PER_PAGE
     questions = [question.format() for question in selection]
     current_questions = questions[start:end]
-    
+
     return current_questions
 
 def create_app(test_config=None):
@@ -24,6 +24,7 @@ def create_app(test_config=None):
     """
     @TODO: Set up CORS. Allow '*' for origins. Delete the sample route after completing the TODOs
     """
+    CORS(app, resources={'/': {'origins': '*'}})
 
     """
     @TODO: Use the after_request decorator to set Access-Control-Allow
