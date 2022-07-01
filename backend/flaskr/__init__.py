@@ -87,11 +87,7 @@ def get_questions():
         abort(400)
 
     """
-    @TODO:
-    Create an endpoint to DELETE question using a question ID.
-
-    TEST: When you click the trash icon next to a question, the question will be removed.
-    This removal will persist in the database and when you refresh the page.
+    An endpoint to DELETE question using a question ID.
     """
 
     """
