@@ -108,15 +108,42 @@ def delete_question(id):
         abort(422)
 
     """
-    @TODO:
-    Create an endpoint to POST a new question,
-    which will require the question and answer text,
+    An endpoint to POST a new question,
+    which requires the question and answer text,
     category, and difficulty score.
-
-    TEST: When you submit a question on the "Add" tab,
-    the form will clear and the question will appear at the end of the last page
-    of the questions list in the "List" tab.
     """
+
+@app.route("/questions", methods=['POST'])
+def post_question():
+    
+    response = request.get_json()
+
+    new_question = response['question']
+    new_answer = response['answer']
+    new_category = response['category']
+    new_difficulty = response['difficulty']
+
+    try:
+        question = Question(question=new_question, answer=new_answer,
+                            category=new_category, difficulty=new_difficulty)
+
+        question.insert()
+
+        questions_select_list = Question.query.all()
+        current_questions = paginate_questions(request, selection)
+
+        return jsonify({
+            'success': True,
+            'created': question.id,
+            'questions': current_questions,
+            'total_questions': len(questions_select_list)
+        })
+
+    except Exception as error:
+        print(error)
+        abort(422)
+
+
 
     """
     @TODO:
