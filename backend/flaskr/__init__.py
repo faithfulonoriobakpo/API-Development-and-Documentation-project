@@ -26,19 +26,19 @@ def create_app(test_config=None):
     """
     CORS(app, resources={'/': {'origins': '*'}})
 
-    """
-    After_request decorator to set Access-Control-Allow
-    """
+"""
+After_request decorator to set Access-Control-Allow
+"""
 @app.after_request
 def after_request(response):
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization, true')
     response.headers.add('Access-Control-Allow-Methods', 'GET, PATCH, PUT, POST, DELETE, OPTIONS')
     return response
 
-    """
-    An endpoint to handle GET requests
-    for all available categories.
-    """
+"""
+An endpoint to handle GET requests
+for all available categories.
+"""
 @app.route('/categories')
 def get_categories():
     categories = Category.query.all()
@@ -55,10 +55,10 @@ def get_categories():
             'categories': categories_obj
         })
 
-    """
-    An endpoint to handle GET requests for questions,
-    including pagination (every 10 questions).
-    """
+"""
+An endpoint to handle GET requests for questions,
+including pagination (every 10 questions).
+"""
 @app.route()
 def get_questions():
     try:
@@ -87,9 +87,9 @@ def get_questions():
         print(error)
         abort(400)
 
-    """
-    An endpoint to DELETE question using a question ID.
-    """
+"""
+An endpoint to DELETE question using a question ID.
+"""
 @app.route('/questions/<int:id>', methods=['DELETE'])
 def delete_question(id):
     try:
@@ -108,11 +108,11 @@ def delete_question(id):
         print(error)
         abort(422)
 
-    """
-    An endpoint to POST a new question,
-    which requires the question and answer text,
-    category, and difficulty score.
-    """
+"""
+An endpoint to POST a new question,
+which requires the question and answer text,
+category, and difficulty score.
+"""
 
 @app.route("/questions", methods=['POST'])
 def post_question():
@@ -146,9 +146,9 @@ def post_question():
 
 
 
-    """
-    A POST endpoint to get questions based on a search term.
-    """
+"""
+A POST endpoint to get questions based on a search term.
+"""
 @app.route('/questions/search', methods=['GET','POST'])
 def search_questions():
     response = request.get_json()
@@ -169,9 +169,9 @@ def search_questions():
         'total_questions': len(questions)
     })
 
-    """
-    A GET endpoint to get questions based on category.
-    """
+"""
+A GET endpoint to get questions based on category.
+"""
 @app.route('/categories/<int:id>/questions', methods=['GET'])
 def get_category_questions(id):
     category = Category.query.get(id)
@@ -191,9 +191,9 @@ def get_category_questions(id):
     except:
         abort(500)
 
-    """
-    A POST endpoint to get questions to play the quiz.
-    """
+"""
+A POST endpoint to get questions to play the quiz.
+"""
 @app.route('/quizzes', methods=['POST'])
 def get_quiz_questions():
     response = request.get_json()
@@ -233,10 +233,10 @@ def get_quiz_questions():
         abort(404)
 
 
-    """
-    error handlers for all expected errors
-    including 404 and 422.
-    """
+"""
+error handlers for all expected errors
+including 404 and 422.
+"""
 @app.errorhandler(400)
 def bad_request(error):
     return jsonify({
