@@ -52,7 +52,7 @@ def create_app(test_config=None):
 
         return jsonify({
                 'success': True,
-                'categories': categories_obj
+                'categories': category_obj
             })
 
     """
