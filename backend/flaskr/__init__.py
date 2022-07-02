@@ -59,7 +59,7 @@ def create_app(test_config=None):
     An endpoint to handle GET requests for questions,
     including pagination (every 10 questions).
     """
-    @app.route()
+    @app.route('/questions')
     def get_questions():
         try:
             #get and paginate all questions
