@@ -146,15 +146,28 @@ def post_question():
 
 
     """
-    @TODO:
-    Create a POST endpoint to get questions based on a search term.
-    It should return any questions for whom the search term
-    is a substring of the question.
-
-    TEST: Search by any phrase. The questions list will update to include
-    only question that include that string within their question.
-    Try using the word "title" to start.
+    A POST endpoint to get questions based on a search term.
     """
+@app.route('/questions/search', methods=['GET','POST'])
+def search_questions():
+#search related question with input string
+    response = request.get_json()
+
+    if(data['searchTerm']):
+        search_term = response['searchTerm']
+
+    related_questions = Question.query.filter(Question.question.ilike('%{}%'.format(search_term))).all()
+
+    if related_questions==[]:
+        abort(404)
+
+    output = paginate_questions(request, related_questions)
+
+    return jsonify({
+        'success': True,
+        'questions': output,
+        'total_questions': len(related_questions)
+    })
 
     """
     @TODO:
