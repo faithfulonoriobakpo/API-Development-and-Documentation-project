@@ -215,7 +215,7 @@ def get_quiz_questions():
         next_question = get_random_question()
 
         while next_question.id not in previous_question:
-            next_question = questions[randomIndex]
+            next_question = get_random_question()
             return jsonify({
                 'success': True,
                 'question': {
@@ -233,10 +233,8 @@ def get_quiz_questions():
         abort(404)
 
     """
-    @TODO:
-    Create error handlers for all expected errors
+    error handlers for all expected errors
     including 404 and 422.
     """
 
     return app
-
