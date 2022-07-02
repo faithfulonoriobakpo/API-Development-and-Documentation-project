@@ -131,7 +131,7 @@ def create_app(test_config=None):
             question.insert()
 
             questions_select_list = Question.query.all()
-            current_questions = paginate_questions(request, selection)
+            current_questions = paginate_questions(request, questions_select_list)
 
             return jsonify({
                 'success': True,
