@@ -47,3 +47,218 @@ Pay special attention to what data the frontend is expecting from each API respo
 By making notes ahead of time, you will practice the core skill of being able to read and understand code and will have a simple plan to follow to build out the endpoints of your backend API.
 
 > View the [Frontend README](./frontend/README.md) for more details.
+
+## API DOCUMENTATION
+
+### GET '/api/v1.0/categories'
+
+Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
+Request Arguments: None
+Returns: An object with a single key, categories, that contains an object of id: category_string key: value pairs.
+
+{
+  "1": "Science",
+  "2": "Art",
+  "3": "Geography",
+  "4": "History",
+  "5": "Entertainment",
+  "6": "Sports"
+}
+
+
+### DELETE /questions/{id}
+
+Deletes the question of the given ID if it exists. Returns success value.
+Sample curl -X DELETE http://127.0.0.1:5000/questions/16?page=2
+
+{
+  "success": true
+}
+
+
+### POST /questions/{id}
+
+Creates a new question using the submitted title, answer, category and difficulty. Returns the id of the created question id, success value, total questions number, and questions list based on current page number to update the frontend
+Sample: curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d '{"question":"What was the name of the first man-made satellite launched by the Soviet Union in 1957?", "answer": "Sputnik 1","category" :"1", "difficulty":"2"}'
+
+{
+  "created": 68, 
+  "questions": [
+    {
+      "answer": "Tom Cruise", 
+      "category": "5", 
+      "difficulty": 4, 
+      "id": 4, 
+      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
+    }, 
+    {
+      "answer": "Maya Angelou", 
+      "category": "4", 
+      "difficulty": 2, 
+      "id": 5, 
+      "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+    }, 
+    {
+      "answer": "Edward Scissorhands", 
+      "category": "5", 
+      "difficulty": 3, 
+      "id": 6, 
+      "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
+    }, 
+    {
+      "answer": "Muhammad Ali", 
+      "category": "4", 
+      "difficulty": 1, 
+      "id": 9, 
+      "question": "What boxer's original name is Cassius Clay?"
+    }, 
+    {
+      "answer": "Brazil", 
+      "category": "6", 
+      "difficulty": 3, 
+      "id": 10, 
+      "question": "Which is the only team to play in every soccer World Cup tournament?"
+    }, 
+    {
+      "answer": "Uruguay", 
+      "category": "6", 
+      "difficulty": 4, 
+      "id": 11, 
+      "question": "Which country won the first ever soccer World Cup in 1930?"
+    }, 
+    {
+      "answer": "George Washington Carver", 
+      "category": "4", 
+      "difficulty": 2, 
+      "id": 12, 
+      "question": "Who invented Peanut Butter?"
+    }, 
+    {
+      "answer": "Lake Victoria", 
+      "category": "3", 
+      "difficulty": 2, 
+      "id": 13, 
+      "question": "What is the largest lake in Africa?"
+    }, 
+    {
+      "answer": "The Palace of Versailles", 
+      "category": "3", 
+      "difficulty": 3, 
+      "id": 14, 
+      "question": "In which royal palace would you find the Hall of Mirrors?"
+    }, 
+    {
+      "answer": "Agra", 
+      "category": "3", 
+      "difficulty": 2, 
+      "id": 15, 
+      "question": "The Taj Mahal is located in which Indian city?"
+    }
+  ], 
+  "success": true, 
+  "total_questions": 61
+}
+
+
+### POST /search
+
+Searches for a question using the submitted search term. Returns the results, success value, total questions.
+Sample curl http://127.0.0.1:5000/search -X POST -H "Content-Type: application/json" -d '{"searchTerm":"who"}'
+
+{
+  "questions": [
+    {
+      "answer": "Maya Angelou", 
+      "category": "4", 
+      "difficulty": 2, 
+      "id": 5, 
+      "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+    }, 
+    {
+      "answer": "George Washington Carver", 
+      "category": "4", 
+      "difficulty": 2, 
+      "id": 12, 
+      "question": "Who invented Peanut Butter?"
+    }, 
+    {
+      "answer": "Alexander Fleming", 
+      "category": "1", 
+      "difficulty": 3, 
+      "id": 21, 
+      "question": "Who discovered penicillin?"
+    }
+  ], 
+  "success": true, 
+  "total_questions": 3
+}
+
+
+### GET /categories/{id}/questions
+
+Returns a list of questions, in the given category, category total_questions and success value
+Results are paginated in groups of 10. Include a request argument to choose page number, starting from 1.
+Sample: curl http://127.0.0.1:5000/categories/3/questions
+
+{
+  "current_category": "Geography", 
+  "questions": [
+    {
+      "answer": "Lake Victoria", 
+      "category": "3", 
+      "difficulty": 2, 
+      "id": 13, 
+      "question": "What is the largest lake in Africa?"
+    }, 
+    {
+      "answer": "The Palace of Versailles", 
+      "category": "3", 
+      "difficulty": 3, 
+      "id": 14, 
+      "question": "In which royal palace would you find the Hall of Mirrors?"
+    }, 
+    {
+      "answer": "Agra", 
+      "category": "3", 
+      "difficulty": 2, 
+      "id": 15, 
+      "question": "The Taj Mahal is located in which Indian city?"
+    }
+  ], 
+  "success": true, 
+  "total_questions": 3
+}
+POST /quizzes
+
+General:
+
+recive the actual question and the category
+return the next question in the same category and success value.
+Sample curl http://127.0.0.1:5000/quizzes -X POST -H "Content-Type: application/json" -d '{"quiz_category":{"type":"Geography","id":"3"}, "previous_questions":[13]}'
+
+{
+  "question": {
+    "answer": "Agra", 
+    "category": "3", 
+    "difficulty": 2, 
+    "id": 15, 
+    "question": "The Taj Mahal is located in which Indian city?"
+  }, 
+  "success": true
+}
+
+### Error Handling
+
+Errors are returned as JSON in the following format:
+
+    {
+        "success": False,
+        "error": 404,
+        "message": "resource not found"
+    }
+
+The API will return three types of errors:
+
+* 400 – Bad Request
+* 404 – Resource not found
+* 422 – Unprocessable Resource
