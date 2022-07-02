@@ -197,8 +197,8 @@ def create_app(test_config=None):
     @app.route('/quizzes', methods=['POST'])
     def get_quiz_questions():
         response = request.get_json()
-        previous_question = body.get('previous_questions')
-        category = body.get('quiz_category')
+        previous_question = response.get('previous_questions')
+        category = response.get('quiz_category')
 
         if ((category is None) or (previous_question is None)):
                 abort(400)
