@@ -34,6 +34,7 @@ def after_request(response):
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization, true')
     response.headers.add('Access-Control-Allow-Methods', 'GET, PATCH, PUT, POST, DELETE, OPTIONS')
     return response
+
     """
     An endpoint to handle GET requests
     for all available categories.
@@ -150,33 +151,45 @@ def post_question():
     """
 @app.route('/questions/search', methods=['GET','POST'])
 def search_questions():
-#search related question with input string
     response = request.get_json()
 
-    if(data['searchTerm']):
+    if(response['searchTerm']):
         search_term = response['searchTerm']
 
-    related_questions = Question.query.filter(Question.question.ilike('%{}%'.format(search_term))).all()
+    questions = Question.query.filter(Question.question.ilike('%{}%'.format(search_term))).all()
 
-    if related_questions==[]:
+    if questions==[]:
         abort(404)
 
-    output = paginate_questions(request, related_questions)
+    result = paginate_questions(request, questions)
 
     return jsonify({
         'success': True,
-        'questions': output,
-        'total_questions': len(related_questions)
+        'questions': result,
+        'total_questions': len(questions)
     })
 
     """
-    @TODO:
-    Create a GET endpoint to get questions based on category.
-
-    TEST: In the "List" tab / main screen, clicking on one of the
-    categories in the left column will cause only questions of that
-    category to be shown.
+    A GET endpoint to get questions based on category.
     """
+@app.route('/categories/<int:id>/questions', methods=['GET'])
+def get_category_questions(id):
+    category = Category.query.get(id)
+    if (category is None):
+        abort(400)
+
+    try:
+        questions = Question.query.filter_by(category=category.id).all()
+        current_questions = paginate_questions(request, questions)
+
+        return jsonify({
+        'success': True,
+        'questions': current_questions,
+        'current_category': category.type,
+        'total_questions': len(Question.query.all())
+        })
+    except:
+        abort(500)
 
     """
     @TODO:
