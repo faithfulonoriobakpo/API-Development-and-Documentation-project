@@ -232,9 +232,41 @@ def get_quiz_questions():
         print(error)
         abort(404)
 
+
     """
     error handlers for all expected errors
     including 404 and 422.
     """
+@app.errorhandler(400)
+def bad_request(error):
+    return jsonify({
+        'success': False,
+        'error': 400,
+        'message': 'Bad request'
+    }), 400
 
-    return app
+@app.errorhandler(404)
+def page_not_found(error):
+    return jsonify({
+        'success': False,
+        'error': 404,
+        'message': 'Page not found'
+    }), 404
+
+@app.errorhandler(422)
+def unprocessable_resource(error):
+    return jsonify({
+        'success': False,
+        'error': 422, 
+        'message': 'Unprocessable resource'
+    }), 422
+
+@app.errorhandler(500)
+def internal_server(error):
+return jsonify({
+    'success': False,
+    'error': 500, 
+    'message': 'Internal server error. Please try again later.'
+}), 500
+
+return app
