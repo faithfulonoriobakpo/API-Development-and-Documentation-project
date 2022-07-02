@@ -119,10 +119,10 @@ def create_app(test_config=None):
         
         response = request.get_json()
 
-        new_question = response['question']
-        new_answer = response['answer']
-        new_category = response['category']
-        new_difficulty = response['difficulty']
+        new_question = response.get('question')
+        new_answer = response.get('answer')
+        new_category = response.get('category')
+        new_difficulty = response.get('difficulty')
 
         try:
             question = Question(question=new_question, answer=new_answer,
@@ -209,13 +209,12 @@ def create_app(test_config=None):
             else:
                 questions = Question.query.filter_by(category=category['id']).all()
 
-            def get_random_question():
-                return questions[random.randrange(0, len(questions)), 1]
             
-            next_question = get_random_question()
+            randomIndex = random.randint(0, len(questions)-1)
+            next_question = questions[randomIndex]
 
             while next_question.id not in previous_question:
-                next_question = get_random_question()
+                next_question = questions[randomIndex]
                 return jsonify({
                     'success': True,
                     'question': {
