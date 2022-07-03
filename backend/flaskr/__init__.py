@@ -200,36 +200,30 @@ def create_app(test_config=None):
         previous_question = response.get('previous_questions')
         category = response.get('quiz_category')
 
-        if ((category is None) or (previous_question is None)):
-                abort(400)
-
         try:
             if (category['id'] == 0):
                 questions = Question.query.all()
             else:
                 questions = Question.query.filter_by(category=category['id']).all()
 
-            
-            randomIndex = random.randint(0, len(questions)-1)
-            next_question = questions[randomIndex]
+            # get a random question from questions
+            def get_random_question():
+                return random.choice(questions)
 
-            while next_question.id not in previous_question:
-                next_question = questions[randomIndex]
-                return jsonify({
-                    'success': True,
-                    'question': {
-                        "answer": next_question.answer,
-                        "category": next_question.category,
-                        "difficulty": next_question.difficulty,
-                        "id": next_question.id,
-                        "question": next_question.question
-                    },
-                    'previous_question': previous_question
-                })
+            while True:
+                next_question = get_random_question()
 
+                if next_question.id in previous_question:
+                    continue
+                else:
+                    return jsonify({
+                        'success': True,
+                        'question': next_question.format()
+                    })
         except Exception as error:
             print(error)
-            abort(404)
+            abort(500)
+
 
 
     """
