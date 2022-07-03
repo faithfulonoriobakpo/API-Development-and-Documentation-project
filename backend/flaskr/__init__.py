@@ -152,7 +152,7 @@ def create_app(test_config=None):
     @app.route('/questions/search', methods=['GET','POST'])
     def search_questions():
         response = request.get_json()
-        search_term = response['searchTerm']
+        search_term = response.get('searchTerm', '')
 
         try:
             if search_term == "" or search_term.isspace():
