@@ -197,7 +197,7 @@ def create_app(test_config=None):
     @app.route('/quizzes', methods=['POST'])
     def get_quiz_questions():
         response = request.get_json()
-        previous_question = response.get('previous_questions')
+        previous_questions = response.get('previous_questions')
         category = response.get('quiz_category')
 
         try:
@@ -213,7 +213,12 @@ def create_app(test_config=None):
             while True:
                 next_question = get_random_question()
 
-                if next_question.id in previous_question:
+                if len(questions) == len(previous_questions):
+                    return jsonify({
+                        'success': True,
+                        'message': "End of Quiz"
+                    })
+                elif next_question.id in previous_questions:
                     continue
                 else:
                     return jsonify({
