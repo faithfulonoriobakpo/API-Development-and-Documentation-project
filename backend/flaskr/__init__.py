@@ -156,18 +156,20 @@ def create_app(test_config=None):
 
         try:
             if search_term == "" or search_term.isspace():
+                pass    
+            else:
+                similar_questions = Question.query.filter(Question.question.ilike('%{}%'.format(search_term))).all()
+
+                if similar_questions==[]:
+                    abort(404)
+
+                result = paginate_questions(request, similar_questions)
+
                 return jsonify({
                 'success': True,
                 'questions': Question.query.all(),
                 'total_questions': len(Question.query.all())
                 })
-                
-            similar_questions = Question.query.filter(Question.question.ilike('%{}%'.format(search_term))).all()
-
-            if similar_questions==[]:
-                abort(404)
-
-            result = paginate_questions(request, similar_questions)
 
         except Exception as error:
             print(error)
