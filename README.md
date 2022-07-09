@@ -68,8 +68,7 @@ Returns: An object with a single key, categories, that contains an object of id:
 
 ### DELETE /questions/{id}
 
-Deletes the question of the given ID if it exists. Returns success value.
-Sample curl -X DELETE http://127.0.0.1:5000/questions/16?page=2
+Deletes the question of the given ID if it exists.
 
 {
   "success": true
@@ -79,7 +78,6 @@ Sample curl -X DELETE http://127.0.0.1:5000/questions/16?page=2
 ### POST /questions/{id}
 
 Creates a new question using the submitted title, answer, category and difficulty. Returns the id of the created question id, success value, total questions number, and questions list based on current page number to update the frontend
-Sample: curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d '{"question":"What was the name of the first man-made satellite launched by the Soviet Union in 1957?", "answer": "Sputnik 1","category" :"1", "difficulty":"2"}'
 
 {
   "created": 68, 
@@ -163,7 +161,6 @@ Sample: curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: applicati
 ### POST /search
 
 Searches for a question using the submitted search term. Returns the results, success value, total questions.
-Sample curl http://127.0.0.1:5000/search -X POST -H "Content-Type: application/json" -d '{"searchTerm":"who"}'
 
 {
   "questions": [
@@ -196,9 +193,7 @@ Sample curl http://127.0.0.1:5000/search -X POST -H "Content-Type: application/j
 
 ### GET /categories/{id}/questions
 
-Returns a list of questions, in the given category, category total_questions and success value
-Results are paginated in groups of 10. Include a request argument to choose page number, starting from 1.
-Sample: curl http://127.0.0.1:5000/categories/3/questions
+Returns a list of questions, in the given category, category total_questions and success value.
 
 {
   "current_category": "Geography", 
@@ -228,13 +223,13 @@ Sample: curl http://127.0.0.1:5000/categories/3/questions
   "success": true, 
   "total_questions": 3
 }
-POST /quizzes
 
-General:
 
-recive the actual question and the category
-return the next question in the same category and success value.
-Sample curl http://127.0.0.1:5000/quizzes -X POST -H "Content-Type: application/json" -d '{"quiz_category":{"type":"Geography","id":"3"}, "previous_questions":[13]}'
+### POST /quizzes
+
+
+Receive the actual question and the category
+Return the next question in the same category and success value.
 
 {
   "question": {
