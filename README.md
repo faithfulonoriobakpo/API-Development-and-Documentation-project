@@ -226,8 +226,6 @@ Returns a list of questions, in the given category, category total_questions and
 
 
 ### POST /quizzes
-
-
 Receive the actual question and the category
 Return the next question in the same category and success value.
 
