@@ -39,6 +39,14 @@ class TriviaTestCase(unittest.TestCase):
         self.assertTrue(len(response_data['categories']))
         self.assertTrue(len(response_data['questions']))
 
+    def test_404_request_beyond_valid_page(self):
+        response = self.client().get('/questions?page=1000')
+        response_data = json.loads(response.data)
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response_data['success'], False)
+        self.assertEqual(response_data['message'], 'Resource not found')
+
     def test_get_categories(self):
         response = self.client().get('/categories')
         response_data = json.loads(response.data)
