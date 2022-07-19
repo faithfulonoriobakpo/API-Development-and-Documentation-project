@@ -45,7 +45,7 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response_data['success'], False)
-        self.assertEqual(response_data['message'], 'Resource not found')
+        self.assertEqual(response_data['message'], 'Page not found')
 
     def test_get_categories(self):
         response = self.client().get('/categories')
@@ -61,7 +61,7 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response_data['success'], False)
-        self.assertEqual(response_data['message'], 'resource not found')
+        self.assertEqual(response_data['message'], 'Page not found')
 
     def test_get_questions(self):
         response = self.client().get('/api/questions')
@@ -98,7 +98,7 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(response.status_code, 422)
         self.assertEqual(response_data['success'], False)
-        self.assertEqual(response_data['message'], 'unprocessable entity')
+        self.assertEqual(response_data['message'], 'Unprocessable resource')
 
     def test_post_questions(self):
         response = self.client().post('/questions', json={
@@ -123,7 +123,7 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(response.status_code, 422)
         self.assertEqual(response_data['success'], False)
-        self.assertEqual(response_data['message'], 'unprocessable entity')
+        self.assertEqual(response_data['message'], 'Unprocessable resource')
 
     def test_search_questions(self):
         response = self.client().post('/questions/search', json={
@@ -143,7 +143,7 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response_data['success'], False)
-        self.assertEqual(response_data['message'], 'resource not found')
+        self.assertEqual(response_data['message'], 'Page not found')
 
     def test_get_categories_questions(self):
         response = self.client().get('/categories/1/questions')
@@ -161,7 +161,7 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response_data['success'], False)
-        self.assertEqual(response_data['message'], 'resource not found')
+        self.assertEqual(response_data['message'], 'Page not found')
 
     def test_get_quiz_questions(self):
         response = self.client().post('/quizzes', json={
@@ -180,7 +180,7 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(response.status_code, 500)
         self.assertEqual(response_data['success'], False)
-        self.assertEqual(response_data['message'], 'server error')
+        self.assertEqual(response_data['message'], 'Internal server error. Please try again later')
 
 
 
