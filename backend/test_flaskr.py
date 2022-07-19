@@ -82,17 +82,29 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(response_data['message'], 'unprocessable entity')
 
     def test_post_questions(self):
-        test_question = {
-            'question': 'Test question',
-            'answer': 'Test answer',
-            'category': 1,
-            'difficulty': 1
-        }
-        response = self.client().post('/questions', json=test_question)
+        response = self.client().post('/questions', json={
+                                            'question': 'Test question',
+                                            'answer': 'Test answer',
+                                            'category': 1,
+                                            'difficulty': 1
+                                        })
         response_data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response_data['success'], True)
+
+    def test_422_post_question_error(self):
+        response = self.client().post('/questions', json={
+                                            'question': 'Test question',
+                                            'answer': 'Test answer',
+                                            'category': 1,
+                                            'difficulty': 1
+                                        })
+        response_data = json.loads(response.data)
+
+        self.assertEqual(response.status_code, 422)
+        self.assertEqual(response_data['success'], False)
+        self.assertEqual(response_data['message'], 'unprocessable entity')
 
 
 
