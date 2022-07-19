@@ -117,16 +117,16 @@ class TriviaTestCase(unittest.TestCase):
         self.assertIsNotNone(response_data['questions'])
         self.assertIsNotNone(response_data['total_questions'])
 
-    def test_422_search_questions_error(self):
+    def test_404_search_questions_error(self):
         response = self.client().post('/questions/search', json={
             'searchTerm': 'sfsiku dusofu'})
         response_data = json.loads(response.data)
 
-        self.assertEqual(response.status_code, 422)
+        self.assertEqual(response.status_code, 404)
         self.assertEqual(response_data['success'], False)
-        self.assertEqual(response_data['message'], 'unprocessable entity')
+        self.assertEqual(response_data['message'], 'resource not found')
 
-    def test_get_categories_questions(test):
+    def test_get_categories_questions(self):
         response = self.client().get('/categories/1/questions')
         response_data = json.loads(response.data)
 
@@ -136,6 +136,13 @@ class TriviaTestCase(unittest.TestCase):
         self.assertTrue(response_data['total_questions'])
         self.assertTrue(response_data['current_category'])
 
+    def test_404_get_categories_questions_error(self):
+        response = self.client().get('/categories/1000/questions')
+        response_data = json.loads(response.data)
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response_data['success'], False)
+        self.assertEqual(response_data['message'], 'resource not found')
 
 
 # Make the tests conveniently executable
