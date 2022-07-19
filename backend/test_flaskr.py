@@ -73,6 +73,14 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(response_data['success'], True)
         self.assertEqual(response_data['deleted'], id)
 
+    def test_422_question_nonexistent():
+        response = self.client().delete('/questions/1000')
+        response_data = json.loads(response.data)
+
+        self.assertEqual(response.status_code, 422)
+        self.assertEqual(response_data['success'], False)
+        self.assertEqual(response_data['message'], 'unprocessable entity')
+
 
 # Make the tests conveniently executable
 if __name__ == "__main__":
