@@ -1,4 +1,5 @@
 import os
+from dotenv import load_dotenv
 import unittest
 import json
 from flask_sqlalchemy import SQLAlchemy
