@@ -126,6 +126,16 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(response_data['success'], False)
         self.assertEqual(response_data['message'], 'unprocessable entity')
 
+    def test_get_categories_questions(test):
+        response = self.client().get('/categories/1/questions')
+        response_data = json.loads(response.data)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response_data['success'], True)
+        self.assertTrue(len(response_data['questions']))
+        self.assertTrue(response_data['total_questions'])
+        self.assertTrue(response_data['current_category'])
+
 
 
 # Make the tests conveniently executable
