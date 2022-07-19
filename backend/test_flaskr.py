@@ -55,6 +55,23 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(response_data['success'], True)
         self.assertTrue(len(response_data['categories']))
 
+    def test_delete_questions(self):
+        question = Question(
+            question='Test question',
+            answer='Test answer',
+            difficulty=1,
+            category=1
+            )
+
+        question.insert()
+        id = question.id
+
+        response = self.client().delete(f'/questions/{id}')
+        response_data = json.loads(response.data)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response_data['success'], True)
+        self.assertEqual(response_data['deleted'], id)
 
 
 # Make the tests conveniently executable
