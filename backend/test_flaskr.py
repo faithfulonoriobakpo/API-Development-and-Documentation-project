@@ -39,7 +39,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertTrue(len(response_data['categories']))
         self.assertTrue(len(response_data['questions']))
 
-    def test_404_request_beyond_valid_page(self):
+    def test_404_page_nonexistent(self):
         response = self.client().get('/questions?page=1000')
         response_data = json.loads(response.data)
 
@@ -54,6 +54,25 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response_data['success'], True)
         self.assertTrue(len(response_data['categories']))
+
+    def test_404_get_categories_error(self):
+        response = self.client().get('/categories/100000')
+        response_data = json.loads(response.data)
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response_data['success'], False)
+        self.assertEqual(response_data['message'], 'resource not found')
+
+    def test_get_questions(self):
+        response = self.client().get('/api/questions')
+        response_data = json.loads(response.data)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response_data['success'], True)
+        self.assertTrue(response_data['total_questions'])
+        self.assertTrue(len(response_data['questions']), 10)
+        self.assertTrue(response_data['categories'])
+
 
     def test_delete_questions(self):
         question = Question(
@@ -162,6 +181,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 500)
         self.assertEqual(response_data['success'], False)
         self.assertEqual(response_data['message'], 'server error')
+
 
 
 # Make the tests conveniently executable
