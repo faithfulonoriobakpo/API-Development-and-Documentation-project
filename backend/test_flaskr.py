@@ -18,7 +18,7 @@ class TriviaTestCase(unittest.TestCase):
         """Define test variables and initialize app."""
         self.app = create_app()
         self.client = self.app.test_client
-        self.database_name = DB_TEST
+        self.database_name = "trivia"
         self.database_path = "postgresql://{}/{}".format(DB_HOST, self.database_name)
         setup_db(self.app, self.database_path)
 
@@ -47,9 +47,9 @@ class TriviaTestCase(unittest.TestCase):
         response = self.client().get('/questions?page=1000')
         response_data = json.loads(response.data)
 
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, 400)
         self.assertEqual(response_data['success'], False)
-        self.assertEqual(response_data['message'], 'Page not found')
+        self.assertEqual(response_data['message'], 'Bad request')
 
     def test_get_categories(self):
         response = self.client().get('/categories')
@@ -68,7 +68,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(response_data['message'], 'Page not found')
 
     def test_get_questions(self):
-        response = self.client().get('/api/questions')
+        response = self.client().get('/questions')
         response_data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 200)
@@ -120,7 +120,7 @@ class TriviaTestCase(unittest.TestCase):
         response = self.client().post('/questions', json={
                                             'question': 'Test question',
                                             'answer': 'Test answer',
-                                            'category': 1,
+                                            'category': 19,
                                             'difficulty': 1
                                         })
         response_data = json.loads(response.data)
@@ -145,9 +145,9 @@ class TriviaTestCase(unittest.TestCase):
             'searchTerm': 'sfsiku dusofu'})
         response_data = json.loads(response.data)
 
-        self.assertEqual(response.status_code, 404)
         self.assertEqual(response_data['success'], False)
-        self.assertEqual(response_data['message'], 'Page not found')
+        self.assertEqual(response.status_code, 422)
+        self.assertEqual(response_data['message'], 'Unprocessable resource')
 
     def test_get_categories_questions(self):
         response = self.client().get('/categories/1/questions')
@@ -163,13 +163,13 @@ class TriviaTestCase(unittest.TestCase):
         response = self.client().get('/categories/1000/questions')
         response_data = json.loads(response.data)
 
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, 400)
         self.assertEqual(response_data['success'], False)
-        self.assertEqual(response_data['message'], 'Page not found')
+        self.assertEqual(response_data['message'], 'Bad request')
 
     def test_get_quiz_questions(self):
         response = self.client().post('/quizzes', json={
-            'quiz_category': {"type": "Geography", "id": "13"},
+            'quiz_category': {'type': 'Entertainment', 'id': '3'},
             'previous_questions': []
         })
         response_data = json.loads(response.data)
@@ -184,7 +184,7 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(response.status_code, 500)
         self.assertEqual(response_data['success'], False)
-        self.assertEqual(response_data['message'], 'Internal server error. Please try again later')
+        self.assertEqual(response_data['message'], 'Internal server error. Please try again later.')
 
 
 # Make the tests conveniently executable
